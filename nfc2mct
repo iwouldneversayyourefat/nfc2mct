@@ -1,0 +1,14 @@
+# convert flipper zero nfc file to mifare classic tool mct file.
+if [$1 = ]; then
+	echo "no files given"
+	exit 0
+fi
+a=0
+for line in $(cat $1  | sed -n '13,200p' | awk -F ':' '{print $2}' | sed 's/ //g')
+do
+	if [ $(( a % 4 )) = 0 ];then
+	    echo "+Sector:" $((a/4))
+	fi
+	a=$((a+1))
+	echo $line
+done
